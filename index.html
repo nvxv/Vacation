@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+</head>
+
+<body>
+  <div class="hotel_reserve_box container mt-5">
+    <h3 class="mb-4">Hotel Reservation Form</h3>
+    <form id="checkout-form">
+      <div class="mb-3">
+        <label for="name" class="mb-1">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="John Smith" required />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="mb-1">Email:</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="johnsmith@email.com" required />
+      </div>
+      <div class="row mb-3 align-items-center">
+        <div class="col">
+          <label for="arrive" class="label-date mb-1">Arrival Date</label>
+          <input id="input1" type="date" name="arrival_date" class="form-control" required />
+        </div>
+        <div class="col">
+          <label for="duration" class="mb-1">Visit Duration</label>
+          <input type="number" min="1" max="28" id="duration" name="duration" class="form-control" value="1" required />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="room_type" class="mb-1">Room/Suite Type</label>
+        <select class="form-select" id="room_type" name="room_type">
+          <option value="king">King</option>
+          <option value="queen">Queen</option>
+          <option value="two-bed">Two Bedroom</option>
+        </select>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="adult_number" class="mb-1">Number of adults</label>
+          <input type="number" min="0" max="4" id="person_number" name="adult_number" class="form-control" value="0"
+            required />
+        </div>
+        <div class="col">
+          <label for="child_number" class="mb-1">Number of children</label>
+          <input type="number" min="0" max="4" id="child_number" name="child_number" class="form-control" value="0"
+            required />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="mb-1">Discounts:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="discount" id="discount-none" value="discount-none" checked
+            required>
+          <label class="form-check-label" for="discount-none">
+            None
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="discount" id="discount-aaa-senior"
+            value="discount-aaa-senior" required>
+          <label class="form-check-label" for="discount-aaa-senior">
+            AAA/Senior (10%)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="discount" id="discount-military" value="discount-military"
+            required>
+          <label class="form-check-label" for="discount-military">
+            Military (20%)
+          </label>
+        </div>
+      </div>
+      <!-- <div class="mb-3"> -->
+      <!--   <label>Total Cost ($) : </label> -->
+      <!--   <span id="result2">0</span> -->
+      <!-- </div> -->
+      <button class="btn btn-primary" type="submit">Estimate Stay Cost</button>
+    </form>
+    <div class="alert alert-danger mt-4" id="checkout-form-error" style="display: none;" />
+  </div>
+  <div class="modal fade" id="checkout-form-price-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Order Summary</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="checkout-form-price-modal-body">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between">
+                <div>Room Cost:</div>
+                <div id="modal-room-cost" />
+              </div>
+            </li>
+            <li class="list-group-item" style="display: none;" id="modal-discount-container">
+              <div class="d-flex justify-content-between">
+                <div>Discount:</div>
+                <div id="modal-discount" />
+              </div>
+            </li>
+            <li class="list-group-item" style="display: none;" id="modal-discounted-cost-container">
+              <div class="d-flex justify-content-between">
+                <div>Discounted Cost:</div>
+                <div id="modal-discounted-cost" />
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between">
+                <div>Tax:</div>
+                <div id="modal-tax" />
+              </div>
+            </li>
+            <li class="list-group-item list-group-item-secondary">
+              <div class="d-flex justify-content-between">
+                <div>Total Cost:</div>
+                <div id="modal-total-cost" />
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
